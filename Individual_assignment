@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>올해의 최고 평점 영화 콜렉션</title>
+
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .header {
+        width: auto;
+        text-align: center;
+        background-color: #90bcdd;
+        margin: auto;
+        padding: 30px 150px;
+        justify-content: space-around;
+        border-radius: 10px;
+    }
+
+    .types {
+        width: auto;
+        margin: auto;
+        text-align: center;
+        padding: 30px 20px 30px 20px;
+        background-color: #97cce4;
+        font-size: 22px;
+        border-radius: 10px;
+
+
+    }
+
+    .form-control {
+        width: auto;
+        margin: auto;
+        background-color: gainsboro;
+        padding: 10px;
+        display: 10px 50px 10px 50px;
+        justify-content: space-around;
+        width: 14%;
+        border-radius: 10px;
+    }
+
+    .button {
+        background-color: gray;
+        border: 2px solid #555555;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        font-size: 14px;
+        margin: 4px 2px;
+        opacity: 0.6;
+        transition: 0.3s;
+        display: inline-block;
+        text-decoration: none;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    .button:hover {
+        opacity: 1;
+        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .mycards {
+        background-color: black;
+        width: 250px;
+        text-align: center;
+        margin: auto;
+    }
+
+    .cardlist {
+        padding: auto;
+        width: auto;
+        font-size: 14px;
+        border-radius: 10px;
+        background-color: rgb(233, 222, 202);
+        background-position: center;
+        background-size: cover;
+        box-shadow: inset 0 0 8px #deb13a;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
+        
+    }
+
+    .title {
+        box-shadow: 0 3px 6px rgba(78, 67, 67, 0.12), 0 3px 6px rgba(110, 83, 83, 0.24);
+        margin: 20px 50px 20px 50px;
+        padding: 20px;
+        width: 300px;
+        justify-self: center;
+        background-color: bisque;
+        border-radius: 10px;
+        cursor: pointer;
+        user-select: none;
+
+    }
+
+    .title img {
+        width: 100%;
+        border-radius: 10px;
+    }
+</style>
+
+<body>
+    <h1 class="header">올해의 최고 평점 영화 콜렉션</h1>
+    <p class="types" onsubmit="handlesearch(event)">
+        영화 검색 :<input class="form-control" placeholder="영화 제목을 검색해 보세요" type="Search" id="floatingTextarea"></input>
+        <button type="submit" class="button" id="search-btn">검색</button>
+    </p>
+    <div class="cardlist">
+        <div class="title" id="id" style="display: block;"></div>
+
+    </div>
+
+
+    <script>
+        let moviecard = 'title'
+        let page = 1;
+        const key = "80fca3b41b459228e494a8c3af8938db";
+        const base_url = "https://image.tmdb.org/t/p/w300/";
+        const cardlist = document.querySelector(".cardlist");
+
+        function fetchMovie(page) {
+            const url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${key}&language=ko-KR&page=${page}`;
+            fetch(url)
+                .then(res => res.json())
+                .then(function (res) {
+                    const movies = res.results;
+                    movies.map(function (movie) {
+                        //console.log(movie.title);
+                        const div = document.createElement('div');
+                        
+                        const output = `
+                    <div class="title" id="id">
+                    <img src="${base_url + movie.poster_path}" alt="The Godfather">
+                    <h3 class="movie-title">${movie.title}</h3>
+                    <p>${movie.overview}</p>
+                    <p>Rating: ${movie.vote_average}</p>
+`;
+                        div.innerHTML = output;
+                        cardlist.appendChild(div);
+                    });
+                })
+                .catch(erro => console.log(erro));
+        };
+
+        window.addEventListener('onLoad', fetchMovie());
+
+        /*function filter() {
+            let search = document.getElementById("form-control").value.toLowerCase();
+            let listInner = document.getElementsByClassName("title");
+
+            for (let i = 0; i < title.length; i++) {
+                poster_path = title[i].getElementsByClassName("movie.poster_path");
+                title = title[i].getElementsByClassName("movie.title");
+                overview = title[i].getElementsByClassName("movie.overview");
+                vote_average = title[i].getElementsByClassName("movie.vote_average");
+                if (movie.poster_path[0].innerHTML.toLowerCase().indexOf(search) != -1 ||
+                    movie.title[0].innerHTML.toLowerCase().indexOf(search) != -1 ||
+                    movie.overview[0].innerHTML.toLowerCase().indexOf(search) != -1 ||
+                    movie.vote_average[0].innerHTML.toLowerCase().indexOf(search) != -1
+                ) {
+                    listInner[i].style.display = "flex"
+                } else {
+                    listInner[i].style.display = "none"
+                }
+            }
+        }*/
+    </script>
+
+
+</body>
+
+</html>
